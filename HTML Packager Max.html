@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<!--
+  HTML Packager Pro
+  © 2026 Tobias Schmidt Services LLC. All rights reserved.
+  This product is licensed for single-user personal use by the original purchaser only.
+  Redistribution, resale, or sharing of any portion of this code is strictly prohibited.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Packager Pro</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧰</text></svg>" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&family=Didact+Gothic&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #0ea5e9;
+            --background: #f9fafb;
+            --card-bg: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --radius: 12px;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.2s ease;
+        }
+        .dark-mode {
+            --primary: #6366f1;
+            --primary-hover: #818cf8;
+            --secondary: #38bdf8;
+            --background: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f3f4f6;
+            --text-secondary: #d1d5db;
+            --border: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            transition: var(--transition);
+            padding: 1rem;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 1rem; }
+        .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+        .app-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.75rem; color: var(--primary); }
+        .app-logo { font-size: 1.75rem; }
+        .theme-switcher { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 1rem; border-radius: var(--radius); background-color: var(--card-bg); border: 1px solid var(--border); transition: var(--transition); }
+        .theme-switcher:hover { background-color: var(--primary); color: white; }
+        .main-content { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 1024px) { .main-content { grid-template-columns: 1fr 1fr; } }
+        .panel { background-color: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.5rem; transition: var(--transition); border: 1px solid var(--border); display: flex; flex-direction: column; height: 100%; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+        .panel-title { font-size: 1.25rem; font-weight: 600; color: var(--text-primary); }
+        .toolbar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.5rem 0.75rem; border-radius: var(--radius); border: none; font-weight: 500; font-size: 0.875rem; cursor: pointer; transition: var(--transition); background-color: var(--card-bg); color: var(--text-primary); border: 1px solid var(--border); font-family: 'Didact Gothic', sans-serif;
+        }
+        .btn:hover { transform: translateY(-1px); background-color: rgba(0, 0, 0, 0.04); }
+        .dark-mode .btn:hover { background-color: rgba(255, 255, 255, 0.06); }
+        .btn-primary { background-color: var(--primary); color: white; border: none; }
+        .btn-primary:hover { background-color: var(--primary-hover); }
+        .dark-mode .btn-primary:hover { background-color: #7c7ff2; }
+        .btn-secondary { background-color: var(--secondary); color: white; border: none; }
+        .btn-secondary:hover { background-color: var(--primary); }
+        .btn-success { background-color: var(--success); color: white; border: none; }
+        .btn-success:hover { background-color: #1da34e; }
+        .dark-mode .btn-success:hover { background-color: #3dd672; }
+        .btn-danger { background-color: var(--danger); color: white; border: none; }
+        .btn-danger:hover { background-color: #dc3030; }
+        .dark-mode .btn-danger:hover { background-color: #f26b6b; }
+        a.external-link { color: var(--secondary); text-decoration: underline; }
+        a.external-link:hover { text-decoration: none; }
+        .editor-container, .preview-container { position: relative; flex-grow: 1; display: flex; flex-direction: column; }
+        .preview-tabs { display: flex; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+        .tab { 
+            padding: 0.5rem 1rem; 
+            cursor: pointer; 
+            border-bottom: 2px solid transparent; 
+            transition: var(--transition);
+            background: transparent;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .tab:hover {
+            color: var(--primary);
+            background-color: rgba(79, 70, 229, 0.15);
+            border-radius: 8px 8px 0 0;
+        }
+        .tab.active { 
+            border-bottom: 2px solid var(--primary); 
+            color: var(--primary); 
+            font-weight: 500; 
+        }
+        .editor-content, .preview-content { flex-grow: 1; position: relative; height: calc(100vh - 300px); min-height: 300px; overflow: hidden; }
+        .preview-content > * { transition: opacity 0.2s ease, transform 0.2s ease; }
+        .preview-content .fade-out { opacity: 0; transform: scale(0.98); }
+        .preview-content .fade-in { opacity: 1; transform: scale(1); }
+        .code-editor { width: 100%; height: 100%; font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; padding: 1rem; resize: none; border-radius: 8px; border: 1px solid var(--border); background-color: var(--card-bg); color: var(--text-primary); overflow: auto; transition: var(--transition); }
+        .code-editor:focus { outline: none; border-color: var(--primary); }
+        .preview-frame { width: 100%; height: 100%; border: none; border-radius: 8px; background-color: white; }
+        .code-view { width: 100%; height: 100%; overflow: auto; border-radius: 8px; background-color: var(--background); border: 1px solid var(--border); padding: 1rem; font-family: 'Fira Code', monospace; font-size: 0.9rem; box-sizing: border-box; color: var(--text-primary); }
+        .code-view pre { margin: 0; }
+        .code-view code { white-space: pre; display: block; background: transparent !important; padding: 0 !important; }
+        /* Syntax highlighting - soft tints of HTML Packager Pro palette */
+        .code-view .hljs { background: transparent !important; }
+        .code-view .hljs-tag { color: var(--primary); }
+        .code-view .hljs-name { color: var(--primary); }
+        .code-view .hljs-attr { color: var(--secondary); }
+        .code-view .hljs-string { color: var(--success); }
+        .code-view .hljs-keyword { color: var(--primary-hover); }
+        .code-view .hljs-comment { color: var(--text-secondary); font-style: italic; }
+        .code-view .hljs-selector-tag { color: var(--primary); }
+        .code-view .hljs-selector-class { color: var(--secondary); }
+        .code-view .hljs-attribute { color: var(--secondary); }
+        .code-view .hljs-number { color: var(--primary-hover); }
+        .code-view .hljs-built_in { color: var(--secondary); }
+        .code-view .hljs-punctuation { color: var(--text-secondary); }
+        .code-view .hljs-meta { color: var(--text-secondary); }
+        .code-view .hljs-doctag { color: var(--primary); }
+        .stats-bar { display: flex; justify-content: space-between; margin-top: 1rem; padding-top: 0.5rem; border-top: 1px solid var(--border); font-size: 0.875rem; color: var(--text-secondary); }
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--success);
+            max-width: 300px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+        }
+        .notification.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .notification.error {
+            border-left-color: var(--danger);
+        }
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+        .notification-close {
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+        .notification-body {
+            font-size: 0.875rem;
+        }
+        .ai-panel { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            background-color: var(--card-bg); 
+            padding: 1rem; 
+            border-top: 1px solid var(--border); 
+            box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.05); 
+            z-index: 51; 
+            transform: translateY(100%); 
+            transition: transform 0.3s ease; 
+        }
+        .ai-panel.open { transform: translateY(0); }
+        .ai-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 50; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .ai-overlay.open { opacity: 1; pointer-events: auto; }
+        .ai-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .ai-title { font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+        .ai-form { display: flex; flex-direction: column; gap: 1rem; }
+        .ai-input { flex-grow: 1; padding: 0.75rem 1rem; border-radius: var(--radius); border: 1px solid var(--border); font-family: 'Inter', sans-serif; background-color: var(--card-bg); color: var(--text-primary); }
+        .ai-input:focus { outline: none; border-color: var(--primary); }
+        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .form-input { padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius); font-family: 'Inter', sans-serif; font-size: 0.875rem; background-color: var(--card-bg); color: var(--text-primary); transition: var(--transition); }
+        .form-input:focus { outline: none; border-color: var(--primary); }
+        .model-select { padding: 0.5rem 1rem; border-radius: var(--radius); border: 1px solid var(--border); background-color: var(--card-bg); color: var(--text-primary); font-family: 'Inter', sans-serif; font-size: 0.875rem; cursor: pointer; transition: var(--transition); }
+        .model-select:hover { background-color: var(--primary); color: white; }
+        /* New Styles */
+        .toolbar-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        .spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .btn-icon {
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Removed shortcut-hint styles */
+        .preview-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        /* Removed copy-btn styles */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <div class="app-title">
+                <i class="fas fa-toolbox app-logo" aria-hidden="true"></i> HTML Packager Pro
+            </div>
+            <div class="theme-switcher" onclick="toggleDarkMode()" tabindex="0" role="button" aria-pressed="false" aria-label="Toggle theme mode">
+                <i class="fas fa-moon" aria-hidden="true"></i>
+                <span id="themeText">Toggle Dark Mode</span>
+            </div>
+        </header>
+        <div class="main-content">
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">Editor</div>
+                    <div class="toolbar-row">
+                        <input type="text" id="fileName" placeholder="File name" value="index.html" class="form-input" aria-label="File name">
+                        <div class="toolbar">
+                            <button class="btn btn-primary" onclick="previewCode()" id="previewBtn" aria-label="Preview">
+                                <i class="fas fa-eye" aria-hidden="true"></i> Preview
+                            </button>
+                            <button class="btn btn-secondary" onclick="downloadFile()" id="downloadBtn" aria-label="Download">
+                                <i class="fas fa-download" aria-hidden="true"></i> Download
+                            </button>
+                            <button class="btn btn-success" onclick="openAiPanel()" id="aiBtn" aria-label="AI Enhance">
+                                <i class="fas fa-robot" aria-hidden="true"></i> AI Enhance
+                            </button>
+                            <button class="btn" onclick="copyToClipboard()" id="copyBtn" aria-label="Copy to clipboard">
+                                <i class="fas fa-copy" aria-hidden="true"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <textarea id="codeInput" class="code-editor" placeholder="Enter your HTML code here..." aria-label="HTML code editor"></textarea>
+                <div class="stats-bar">
+                    <div id="wordCount">Words: 0 | Characters: 0</div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">Preview</div>
+                    <div class="preview-tabs" role="tablist">
+                        <button class="tab active" data-tab="rendered" role="tab" aria-selected="true" aria-controls="renderedPreview" id="renderedTab">
+                            <i class="fas fa-desktop" aria-hidden="true"></i> Rendered
+                        </button>
+                        <button class="tab" data-tab="code" role="tab" aria-selected="false" aria-controls="codePreview" id="codeTab">
+                            <i class="fas fa-code" aria-hidden="true"></i> Code
+                        </button>
+                    </div>
+                </div>
+                <div class="preview-content">
+                    <iframe id="renderedPreview" class="preview-frame" style="display: block;" title="HTML preview" role="tabpanel" aria-labelledby="renderedTab"></iframe>
+                    <pre id="codePreview" class="code-view" style="display: none;" role="tabpanel" aria-labelledby="codeTab"><code class="language-html"></code></pre>
+                </div>
+            </div>
+        </div>
+        <div id="aiOverlay" class="ai-overlay" onclick="closeAiPanel()"></div>
+        <div id="aiPanel" class="ai-panel">
+            <div class="ai-header">
+                <h3 class="ai-title"><i class="fas fa-robot" aria-hidden="true"></i> AI Enhance</h3>
+                <button class="btn btn-danger" onclick="closeAiPanel()" aria-label="Close AI panel">
+                    <i class="fas fa-times" aria-hidden="true"></i> Close
+                </button>
+            </div>
+            <form class="ai-form" onsubmit="submitAiEnhance(event)">
+                <div class="form-group">
+                    <label for="modelSelect">Select Model:</label>
+                    <select id="modelSelect" class="model-select" aria-label="AI model selection">
+                        <option value="qwen/qwen3-coder:free">Qwen 3</option>
+                        <option value="google/gemma-3n-e2b-it:free">Gemma 3n</option>
+                        <option value="mistralai/mistral-small-3.2-24b-instruct:free">Mistral 24B</option>
+                        <option value="moonshotai/kimi-dev-72b:free">Kimi Developer 72B</option>
+                        <option value="deepseek/deepseek-r1-0528:free">DeepSeek R1</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="aiPrompt">Enhancement Prompt:</label>
+                    <input type="text" id="aiPrompt" class="ai-input" placeholder="Describe the enhancement (e.g., 'Make responsive')" aria-label="Enhancement prompt">
+                </div>
+                <div class="form-group">
+                    <label for="apiKeyInput">OpenRouter API Key (free):</label>
+                    <div style="display:flex;gap:0.5rem;align-items:center;">
+                        <input type="password" id="apiKeyInput" class="ai-input" placeholder="sk-..." aria-label="OpenRouter API Key" style="flex:1;">
+                        <button type="button" class="btn btn-secondary" onclick="saveApiKey()" aria-label="Save API key">Save Key</button>
+                    </div>
+                    <small style="font-size:0.8rem;color:var(--text-secondary);">Need a free key? <a href="https://openrouter.ai" class="external-link" target="_blank" rel="noopener">OpenRouter.ai</a> → <em>API Keys</em> → <strong>Generate</strong> → paste it here.</small>
+                </div>
+                <button type="submit" class="btn btn-primary" id="enhanceBtn" aria-label="Enhance code">
+                    <span id="enhanceBtnText">Enhance</span>
+                    <span id="enhanceSpinner" class="spinner" style="display: none;"></span>
+                </button>
+            </form>
+        </div>
+        <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js" defer></script>
+    <script>
+        /* ---------------------------------------------
+           Basic License Protection (no UI impact)
+        --------------------------------------------- */
+        const LICENSE_ID = "REPLACE_WITH_CUSTOMER_LICENSE"; // replaced per purchaser
+        let licenseValid = true; // default to true to avoid false-positives offline
+
+        async function verifyLicense() {
+            try {
+                // Skip if already validated within last 30 days
+                const cacheKey = 'license_valid_until';
+                const cachedUntil = Number(localStorage.getItem(cacheKey) || 0);
+                if (cachedUntil && Date.now() < cachedUntil) {
+                    licenseValid = true;
+                    return;
+                }
+
+                const resp = await fetch(`https://your-license-server.example/verify?lic=${encodeURIComponent(LICENSE_ID)}`, { method: 'GET', cache: 'no-store' });
+                if (!resp.ok) throw new Error('license server error');
+                const data = await resp.json();
+                licenseValid = !!data.valid;
+
+                // Cache positive validations for 30 days
+                if (licenseValid) {
+                    localStorage.setItem(cacheKey, String(Date.now() + 1000 * 60 * 60 * 24 * 30));
+                }
+            } catch (err) {
+                // Network errors fall back to previously stored status to avoid user lockout
+                console.warn('License check failed, continuing with cached status.', err);
+            }
+        }
+
+        function ensureLicensed() {
+            if (!licenseValid) {
+                console.error('License check failed – action blocked.');
+                return false;
+            }
+            return true;
+        }
+
+        // Kick off license verification in background (non-blocking)
+        verifyLicense();
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up tab switching
+            setupTabSwitching();
+            // Initialize with template
+            initWithTemplate();
+            // Set initial preview
+            previewCode();
+            // Initialize highlight.js
+            hljs.highlightAll();
+            // Set up keyboard shortcuts
+            setupKeyboardShortcuts();
+            
+            // Restore saved session data
+            try {
+                const storedModel = localStorage.getItem('modelSelect');
+                if (storedModel !== null) {
+                    const modelEl = document.getElementById('modelSelect');
+                    if (modelEl) modelEl.value = storedModel;
+                }
+                const storedApiKey = localStorage.getItem('openrouter_api_key');
+                if (storedApiKey !== null) {
+                    const apiInput = document.getElementById('apiKeyInput');
+                    if (apiInput) apiInput.value = storedApiKey;
+                }
+            } catch (e) { /* ignore */ }
+            
+            // Apply theme preference (saved or system)
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                if (!document.body.classList.contains('dark-mode')) toggleDarkMode();
+            } else if (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                toggleDarkMode();
+            }
+            // Set initial preview (after restoring code)
+            previewCode();
+            
+            // Log initialization
+            console.log('HTML Packager Pro initialized successfully');
+        });
+
+        function previewCode() {
+            const codeInput = document.getElementById('codeInput');
+            if (!codeInput) return;
+            
+            const code = codeInput.value;
+            const iframe = document.getElementById('renderedPreview');
+            if (iframe) iframe.srcdoc = code;
+            
+            const codeElement = document.querySelector('#codePreview code');
+            if (codeElement) {
+                codeElement.textContent = code;
+                hljs.highlightElement(codeElement);
+            }
+            wordCounter();
+        }
+
+        function downloadFile() {
+            if (!ensureLicensed()) return;
+            try {
+                const code = document.getElementById('codeInput').value;
+                let fileName = document.getElementById('fileName').value || 'index.html';
+                if (!fileName.toLowerCase().endsWith('.html')) fileName += '.html';
+                
+                const blob = new Blob([code], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = fileName;
+                link.click();
+                
+                requestAnimationFrame(() => URL.revokeObjectURL(url));
+                showNotification('Success', `File downloaded as ${fileName}`);
+            } catch (error) {
+                showNotification('Error', 'Failed to download: ' + error.message, 'error');
+            }
+        }
+
+        function toggleDarkMode() {
+            const body = document.body;
+            const isDarkMode = body.classList.toggle('dark-mode');
+            
+            // Update aria-pressed state
+            document.querySelector('.theme-switcher').setAttribute('aria-pressed', isDarkMode);
+            
+            // Update icon and text
+            const icon = document.querySelector('.theme-switcher i');
+            const themeText = document.getElementById('themeText');
+            
+            if (isDarkMode) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                themeText.textContent = 'Toggle Light Mode';
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                themeText.textContent = 'Toggle Dark Mode';
+            }
+            // Persist preference
+            try { localStorage.setItem('theme', isDarkMode ? 'dark' : 'light'); } catch (e) { /* ignore */ }
+        }
+
+        function wordCounter() {
+            const text = document.getElementById('codeInput')?.value || '';
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            const el = document.getElementById('wordCount');
+            if (el) el.textContent = `Words: ${words} | Characters: ${text.length}`;
+        }
+
+        function openAiPanel() {
+            document.getElementById('aiOverlay').classList.add('open');
+            document.getElementById('aiPanel').classList.add('open');
+            document.getElementById('aiPrompt').focus();
+        }
+
+        function closeAiPanel() {
+            document.getElementById('aiOverlay').classList.remove('open');
+            document.getElementById('aiPanel').classList.remove('open');
+        }
+        
+        function showCopySuccess() {
+            const btn = document.getElementById('copyBtn');
+            const icon = btn.querySelector('i');
+            icon.classList.remove('fa-copy');
+            icon.classList.add('fa-check');
+            setTimeout(() => {
+                icon.classList.remove('fa-check');
+                icon.classList.add('fa-copy');
+            }, 1500);
+        }
+        
+        function copyToClipboard() {
+            const code = document.getElementById('codeInput').value;
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(code)
+                        .then(() => { showCopySuccess(); showNotification('Success', 'Code copied to clipboard'); })
+                        .catch(() => fallbackCopy(code));
+                } else {
+                    fallbackCopy(code);
+                }
+            } catch (e) {
+                fallbackCopy(code);
+            }
+        }
+        
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.cssText = 'position:fixed;left:-9999px';
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                if (document.execCommand('copy')) {
+                    showCopySuccess();
+                    showNotification('Success', 'Code copied to clipboard');
+                } else {
+                    showNotification('Error', 'Failed to copy code', 'error');
+                }
+            } catch (e) {
+                showNotification('Error', 'Failed to copy code', 'error');
+            }
+            document.body.removeChild(textArea);
+        }
+        
+        // Removed copyPreviewContent function as we removed the duplicate copy button
+
+        function showNotification(title, message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-header">
+                    <span>${title}</span>
+                    <span class="notification-close" onclick="this.parentElement.parentElement.remove()" aria-label="Close notification">×</span>
+                </div>
+                <div class="notification-body">${message}</div>
+            `;
+            
+            document.getElementById('toastContainer').appendChild(notification);
+            setTimeout(() => notification.classList.add('visible'), 10);
+            setTimeout(() => {
+                notification.classList.remove('visible');
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+
+        function saveApiKey() {
+            const input = document.getElementById('apiKeyInput');
+            if (!input) {
+                console.error('apiKeyInput element not found');
+                return;
+            }
+            const key = input.value.trim();
+            if (!/^sk-\w{20,}$/i.test(key)) {
+                showNotification('Error', 'Please enter a valid OpenRouter key that begins with “sk-”', 'error');
+                return;
+            }
+            try {
+                localStorage.setItem('openrouter_api_key', key);
+                showNotification('Success', 'API key saved');
+            } catch (e) {
+                console.error('Error saving API key:', e);
+                showNotification('Error', 'Failed to save API key', 'error');
+            }
+        }
+
+        async function submitAiEnhance(event) {
+            event.preventDefault();
+            if (!ensureLicensed()) return;
+            const code = document.getElementById('codeInput').value;
+            if (!code.trim()) {
+                showNotification('Error', 'Please enter some code first', 'error');
+                return;
+            }
+            const prompt = document.getElementById('aiPrompt').value || 'Please improve this HTML code';
+            const selectedModel = document.getElementById('modelSelect').value;
+            const storedKey = localStorage.getItem('openrouter_api_key');
+            if (!storedKey) {
+                showNotification('Error', 'Please save your OpenRouter API key first in the AI panel.', 'error');
+                return;
+            }
+            const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
+            // Show loading state
+            const enhanceBtn = document.getElementById('enhanceBtn');
+            const enhanceBtnText = document.getElementById('enhanceBtnText');
+            const enhanceSpinner = document.getElementById('enhanceSpinner');
+            enhanceBtn.disabled = true;
+            enhanceBtnText.textContent = 'Enhancing...';
+            enhanceSpinner.style.display = 'inline-block';
+            const requestBody = {
+                model: selectedModel,
+                messages: [
+                    {"role": "system", "content": "You are an AI assistant that improves HTML code."},
+                    {"role": "user", "content": `${prompt}:\n\n${code}`}
+                ],
+                top_p: 1,
+                temperature: 0.1,
+                frequency_penalty: 0,
+                presence_penalty: 0,
+                repetition_penalty: 1,
+                top_k: 0
+            };
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000);
+                const response = await fetch(OPENROUTER_API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${storedKey}`
+                    },
+                    body: JSON.stringify(requestBody),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error?.message || `API Error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!data.choices || !data.choices[0]?.message?.content) {
+                    throw new Error('Invalid response from AI service');
+                }
+                
+                const aiOutput = data.choices[0].message.content;
+                
+                // Sanitize the output to ensure it's valid HTML
+                let sanitizedOutput = aiOutput;
+                
+                // Check if we got back actual code (basic validation)
+                if (!sanitizedOutput.includes('<') || !sanitizedOutput.includes('>')) {
+                    // If the AI returned explanation text instead of code, try to extract code
+                    const codeMatch = /```html([\s\S]*?)```|```([\s\S]*?)```|<html>([\s\S]*?)<\/html>/.exec(sanitizedOutput);
+                    if (codeMatch) {
+                        sanitizedOutput = codeMatch[1] || codeMatch[2] || codeMatch[3] || sanitizedOutput;
+                    }
+                }
+                
+                document.getElementById('codeInput').value = sanitizedOutput;
+                previewCode();
+                closeAiPanel();
+                showNotification('Success', 'Code enhanced successfully');
+                
+            } catch (error) {
+                console.error('AI Enhance Error:', error);
+                let errorMessage = 'Failed to enhance code';
+                
+                if (error.name === 'AbortError') {
+                    errorMessage = 'Request timed out. Please try again.';
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                
+                showNotification('Error', errorMessage, 'error');
+            } finally {
+                // Reset button state
+                enhanceBtn.disabled = false;
+                enhanceBtnText.textContent = 'Enhance';
+                enhanceSpinner.style.display = 'none';
+            }
+        }
+
+        // Improved tab switching
+        // Set up tab switching after page is loaded
+        function setupTabSwitching() {
+            const tabs = document.querySelectorAll('.preview-tabs .tab');
+            if (tabs.length === 0) {
+                console.error('No tab elements found');
+                return;
+            }
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const currentActive = document.querySelector('.preview-tabs .tab.active');
+                    if (currentActive === tab) return;
+                    
+                    // Update tab states
+                    document.querySelectorAll('.preview-tabs .tab').forEach(t => {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', 'false');
+                    });
+                    
+                    tab.classList.add('active');
+                    tab.setAttribute('aria-selected', 'true');
+                    
+                    const target = tab.dataset.tab;
+                    const renderedPreview = document.getElementById('renderedPreview');
+                    const codePreview = document.getElementById('codePreview');
+                    
+                    if (!renderedPreview || !codePreview) return;
+                    
+                    const outgoing = target === 'rendered' ? codePreview : renderedPreview;
+                    const incoming = target === 'rendered' ? renderedPreview : codePreview;
+                    
+                    outgoing.classList.add('fade-out');
+                    setTimeout(() => {
+                        outgoing.style.display = 'none';
+                        outgoing.classList.remove('fade-out');
+                        incoming.style.display = 'block';
+                        incoming.classList.add('fade-in');
+                        if (target === 'code') updateCodePreview();
+                    }, 200);
+                });
+            });
+        }
+        
+        function updateCodePreview() {
+            const code = document.getElementById('codeInput')?.value || '';
+            const codeElement = document.querySelector('#codePreview code');
+            if (codeElement) {
+                codeElement.textContent = code;
+                hljs.highlightElement(codeElement);
+            }
+        }
+        
+        // Removed updateCopyButton function as we removed the duplicate copy button
+
+        // Set up keyboard shortcuts
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', function(event) {
+                try {
+                    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+                    const modifierKey = isMac ? event.metaKey : event.ctrlKey;
+                    
+                    // Command/Ctrl+S for download
+                    if (modifierKey && event.key === 's') {
+                        event.preventDefault();
+                        downloadFile();
+                    }
+                    
+                    // Command/Ctrl+P for preview (prevent print dialog)
+                    if (modifierKey && event.key === 'p') {
+                        event.preventDefault();
+                        previewCode();
+                    }
+                    
+                    // Command/Ctrl+C for copy when text is selected in code editor
+                    if (modifierKey && event.key === 'c') {
+                        const activeElement = document.activeElement;
+                        if (activeElement && activeElement.id === 'codeInput') {
+                            const selection = activeElement.value.substring(
+                                activeElement.selectionStart, 
+                                activeElement.selectionEnd
+                            );
+                            // Only handle if no text is selected (otherwise let browser handle it)
+                            if (!selection) {
+                                // Don't prevent default - let browser handle normal copy operation
+                            }
+                        }
+                    }
+
+                    // Command/Ctrl+Shift+A to quickly open the AI panel
+                    if (modifierKey && event.shiftKey && event.key.toLowerCase() === 'a') {
+                        event.preventDefault();
+                        openAiPanel();
+                    }
+ 
+                    // Escape to close AI panel
+                    const aiPanel = document.getElementById('aiPanel');
+                    if (event.key === 'Escape' && aiPanel && aiPanel.classList.contains('open')) {
+                        closeAiPanel();
+                    }
+                } catch (error) {
+                    console.error('Error processing keyboard shortcut:', error);
+                }
+            });
+            
+            // Auto-update preview as user types (with debounce)
+            let typingTimer;
+            const doneTypingInterval = 200; // ms
+            
+            const codeInput = document.getElementById('codeInput');
+            if (codeInput) {
+                codeInput.addEventListener('input', function() {
+                    clearTimeout(typingTimer);
+                    typingTimer = setTimeout(previewCode, doneTypingInterval);
+                    wordCounter();
+                    // Persist code on each change
+                    try { localStorage.setItem('codeContent', codeInput.value); } catch (e) { /* ignore */ }
+                });
+            } else {
+                console.error('codeInput element not found');
+            }
+
+            const modelSelect = document.getElementById('modelSelect');
+            if (modelSelect) {
+                modelSelect.addEventListener('change', () => {
+                    try { localStorage.setItem('modelSelect', modelSelect.value); } catch (e) { /* ignore */ }
+                });
+            }
+        }
+        
+        // Initialize with some template code if empty
+        function initWithTemplate() {
+            const codeInput = document.getElementById('codeInput');
+            if (!codeInput || codeInput.value.trim()) return;
+            
+            codeInput.value = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Page</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: #fff;
+        }
+        h1 {
+            background: linear-gradient(180deg, #1d1d1f 0%, #6e6e73 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin: 0 0 12px 0;
+        }
+        p {
+            color: #6e6e73;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to HTML Packager Pro</h1>
+    <p>Your all-in-one HTML editor. Start editing or create your own.</p>
+</body>
+</html>`;
+            previewCode();
+        }
+    </script>
+</body>
+</html>
